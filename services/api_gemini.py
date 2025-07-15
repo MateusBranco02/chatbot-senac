@@ -6,7 +6,7 @@ load_dotenv()
 
 genai.configure(api_key=os.getenv('API_KEY_GEMINI'))
 
-model = genai.GenerativeModel('gemini-1.5-flash')
+model = genai.GenerativeModel('gemini-2.0-flash')
 
 
 def perguntar_ao_gemini(pergunta, contexto):
