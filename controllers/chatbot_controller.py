@@ -35,7 +35,8 @@ def extrair_conteudo_site():
     paginas = {
         'Página Principal': 'https://www.jovemprogramador.com.br',
         'Dúvidas Frequentes': 'https://www.jovemprogramador.com.br/duvidas.php',
-        'Sobre o Programa': 'https://www.jovemprogramador.com.br/sobre.php'
+        'Sobre o Programa': 'https://www.jovemprogramador.com.br/sobre.php',
+        'Hackathon': 'https://www.jovemprogramador.com.br/hackathon/'
     }
 
     dados = []
