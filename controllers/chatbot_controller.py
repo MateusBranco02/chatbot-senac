@@ -3,6 +3,7 @@ import json
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
+from models.Chat import PerguntaRequest
 from services.api_gemini import perguntar_ao_gemini
 
 
@@ -26,9 +27,11 @@ def atualizar_scraping(caminho):
         return True
 
 
-def processar_pergunta(pergunta):
+async def processar_pergunta(request: PerguntaRequest):
+    pergunta_usuario = request.pergunta
+
     dados_site = inicializar_dados_site()
-    return perguntar_ao_gemini(pergunta, dados_site)
+    return await perguntar_ao_gemini(pergunta_usuario, dados_site)
 
 
 def extrair_conteudo_site():
@@ -80,4 +83,8 @@ def carregar_conteudo_site(caminho=caminho_arquivo):
             return json.load(f)
     except FileNotFoundError:
         return 'Conteúdo do site não encontrado!'
+
+
+async def getHealth():
+    return { 'message': 'Api está online!' }
 
