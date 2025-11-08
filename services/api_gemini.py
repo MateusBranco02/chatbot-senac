@@ -9,7 +9,7 @@ genai.configure(api_key=os.getenv('API_KEY_GEMINI'))
 model = genai.GenerativeModel('gemini-2.0-flash')
 
 
-def perguntar_ao_gemini(pergunta, contexto):
+async def perguntar_ao_gemini(pergunta, contexto):
     prompt = f"""
 Você é um assistente virtual treinado para responder perguntas **exclusivamente com base no conteúdo do site oficial Jovem Programador** (https://www.jovemprogramador.com.br).
 
@@ -28,7 +28,7 @@ Se a pergunta **não tiver relação com o programa Jovem Programador ou com o c
 
 Se o usuário enviar apenas uma saudação, agradecimento ou comentário genérico, responda de forma simpática e breve.
 
-Você deve responder sempre com parágrafos claros e bem separados. Utilize listas com * quando necessário. Não use texto todo em caixa alta. Mantenha espaçamento entre parágrafos para facilitar a leitura.
+Você deve responder sempre com parágrafos claros e bem separados. Utilize listas com • quando necessário. Não use texto todo em caixa alta. Mantenha espaçamento entre parágrafos para facilitar a leitura.
 
 ---
 

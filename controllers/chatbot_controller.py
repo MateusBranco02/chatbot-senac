@@ -3,6 +3,7 @@ import json
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
+from models.Chat import PerguntaRequest
 from services.api_gemini import perguntar_ao_gemini
 
 
@@ -26,9 +27,11 @@ def atualizar_scraping(caminho):
         return True
 
 
-def processar_pergunta(pergunta):
+async def processar_pergunta(request: PerguntaRequest):
+    pergunta_usuario = request.pergunta
+
     dados_site = inicializar_dados_site()
-    return perguntar_ao_gemini(pergunta, dados_site)
+    return await perguntar_ao_gemini(pergunta_usuario, dados_site)
 
 
 def extrair_conteudo_site():
@@ -36,7 +39,8 @@ def extrair_conteudo_site():
         'Página Principal': 'https://www.jovemprogramador.com.br',
         'Dúvidas Frequentes': 'https://www.jovemprogramador.com.br/duvidas.php',
         'Sobre o Programa': 'https://www.jovemprogramador.com.br/sobre.php',
-        'Hackathon': 'https://www.jovemprogramador.com.br/hackathon/'
+        'Hackathon': 'https://www.jovemprogramador.com.br/hackathon/',
+        'Inscrições PJP': 'https://www.jovemprogramador.com.br/inscricoes-jovem-programador/'
     }
 
     dados = []
@@ -54,8 +58,8 @@ def extrair_conteudo_site():
             soup = BeautifulSoup(response.text, "html.parser")
 
             bloco = {'titulo': titulo, 'conteudo': []}
-            for tag in soup.find_all(['h1', 'h2', 'h3', 'p', 'li', 'ul', 'ol']):
-                if tag.name in ['h1', 'h2', 'h3', 'p']:
+            for tag in soup.find_all(['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'li', 'ul', 'ol']):
+                if tag.name in ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p']:
                     texto = tag.get_text(strip=True)
                     if texto:
                         bloco['conteudo'].append(texto)
@@ -80,4 +84,8 @@ def carregar_conteudo_site(caminho=caminho_arquivo):
             return json.load(f)
     except FileNotFoundError:
         return 'Conteúdo do site não encontrado!'
+
+
+async def getHealth():
+    return { 'message': 'Api está online!' }
 
