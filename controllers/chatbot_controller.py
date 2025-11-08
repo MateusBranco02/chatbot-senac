@@ -39,7 +39,8 @@ def extrair_conteudo_site():
         'Página Principal': 'https://www.jovemprogramador.com.br',
         'Dúvidas Frequentes': 'https://www.jovemprogramador.com.br/duvidas.php',
         'Sobre o Programa': 'https://www.jovemprogramador.com.br/sobre.php',
-        'Hackathon': 'https://www.jovemprogramador.com.br/hackathon/'
+        'Hackathon': 'https://www.jovemprogramador.com.br/hackathon/',
+        'Inscrições PJP': 'https://www.jovemprogramador.com.br/inscricoes-jovem-programador/'
     }
 
     dados = []
@@ -57,8 +58,8 @@ def extrair_conteudo_site():
             soup = BeautifulSoup(response.text, "html.parser")
 
             bloco = {'titulo': titulo, 'conteudo': []}
-            for tag in soup.find_all(['h1', 'h2', 'h3', 'p', 'li', 'ul', 'ol']):
-                if tag.name in ['h1', 'h2', 'h3', 'p']:
+            for tag in soup.find_all(['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'li', 'ul', 'ol']):
+                if tag.name in ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p']:
                     texto = tag.get_text(strip=True)
                     if texto:
                         bloco['conteudo'].append(texto)
