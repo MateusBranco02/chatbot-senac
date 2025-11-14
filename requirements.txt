@@ -2,5 +2,7 @@ google-generativeai
 python-dotenv
 beautifulsoup4
 requests
+aiohttp
+aiofiles
 fastapi
 uvicorn
