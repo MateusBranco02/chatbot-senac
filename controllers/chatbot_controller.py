@@ -1,6 +1,5 @@
 import os
 import json
-import requests
 import aiohttp
 import aiofiles
 from bs4 import BeautifulSoup
@@ -29,11 +28,102 @@ async def atualizar_scraping(caminho):
         return True
 
 
+def filtrar_contexto(dados_site, pergunta: str, limite_caracteres: int = 6000) -> str:
+    """Monta um contexto reduzido a partir do dados_site com base na pergunta.
+
+    Estratégia simples:
+    - extrai palavras-chave da pergunta (ignorando stopwords comuns);
+    - percorre os blocos do site (título + conteúdos) e inclui trechos que
+      contenham alguma dessas palavras;
+    - concatena os trechos em uma única string até atingir um limite de tamanho.
+    """
+
+    if not dados_site:
+        return ""
+
+    pergunta_lower = (pergunta or "").lower()
+
+    if "hackathon" in pergunta_lower:
+        for bloco in dados_site:
+            titulo = str(bloco.get("titulo", ""))
+            if "hackathon" in titulo.lower():
+                conteudos = bloco.get("conteudo", [])
+                trechos = [f"[SEÇÃO: {titulo}]"]
+                for item in conteudos:
+                    if isinstance(item, dict) and item.get("tipo") == "lista":
+                        texto_item = " | ".join(item.get("itens", []))
+                    else:
+                        texto_item = str(item)
+                    trechos.append(texto_item)
+
+                contexto_hackathon = "\n".join(trechos)
+
+                return contexto_hackathon[:30000]
+
+    stopwords = {"o", "a", "os", "as", "de", "da", "do", "das", "dos", "em", "no", "na", "nas", "nos",
+                 "para", "por", "e", "ou", "um", "uma", "que", "com", "se", "sobre", "ao", "à", "às",
+                 "dos", "das", "ser", "tem", "ter", "qual"}
+
+    palavras = [p for p in pergunta_lower.replace("?", " ").replace(",", " ").split() if p and p not in stopwords]
+
+
+    if not palavras:
+        palavras = [p for p in pergunta_lower.split() if p]
+
+    trechos_selecionados = []
+
+    for bloco in dados_site:
+        if len("\n".join(trechos_selecionados)) >= limite_caracteres:
+            break
+
+        titulo = str(bloco.get("titulo", ""))
+        conteudos = bloco.get("conteudo", [])
+
+        titulo_lower = titulo.lower()
+        relevante_titulo = any(p in titulo_lower for p in palavras)
+
+        if relevante_titulo:
+            trechos_selecionados.append(f"[SEÇÃO: {titulo}]")
+
+        for item in conteudos:
+            if len("\n".join(trechos_selecionados)) >= limite_caracteres:
+                break
+
+            if isinstance(item, dict) and item.get("tipo") == "lista":
+                texto_item = " | ".join(item.get("itens", []))
+            else:
+                texto_item = str(item)
+
+            texto_lower = texto_item.lower()
+            if relevante_titulo or any(p in texto_lower for p in palavras):
+                trechos_selecionados.append(texto_item)
+
+    if not trechos_selecionados:
+        for bloco in dados_site:
+            titulo = str(bloco.get("titulo", ""))
+            conteudos = bloco.get("conteudo", [])
+            trechos_selecionados.append(f"[SEÇÃO: {titulo}]")
+            for item in conteudos[:5]:
+                if isinstance(item, dict) and item.get("tipo") == "lista":
+                    texto_item = " | ".join(item.get("itens", []))
+                else:
+                    texto_item = str(item)
+                trechos_selecionados.append(texto_item)
+                if len("\n".join(trechos_selecionados)) >= limite_caracteres:
+                    break
+            if len("\n".join(trechos_selecionados)) >= limite_caracteres:
+                break
+
+    contexto_reduzido = "\n".join(trechos_selecionados)
+    return contexto_reduzido[:limite_caracteres]
+
+
 async def processar_pergunta(request: PerguntaRequest):
     pergunta_usuario = request.pergunta
 
     dados_site = await inicializar_dados_site()
-    return await perguntar_ao_gemini(pergunta_usuario, dados_site)
+    contexto_reduzido = filtrar_contexto(dados_site, pergunta_usuario)
+    return await perguntar_ao_gemini(pergunta_usuario, contexto_reduzido)
 
 
 async def extrair_conteudo_site():
