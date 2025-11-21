@@ -1,0 +1,83 @@
+{
+  "resumo": {
+    "total_requisicoes": 10,
+    "sucessos": 10,
+    "erros": 0,
+    "tempo_total_segundos": 41.0,
+    "tempo_medio_segundos": 24.51,
+    "tempo_min_segundos": 4.24,
+    "tempo_max_segundos": 40.99
+  },
+  "detalhes": [
+    {
+      "indice": 1,
+      "pergunta": "Quais são os requisitos para participar?",
+      "status_code": 200,
+      "tempo_resposta": 32.95,
+      "resposta_resumida": "Para participar do Programa Jovem Programador, você precisa atender aos seguintes requisitos:\n\n*   Ter idade a partir de 16 anos. Para a edição de 2026, é necessário completar 16 anos até 20/02/2026.\n..."
+    },
+    {
+      "indice": 2,
+      "pergunta": "Qual a idade mínima para participar?",
+      "status_code": 200,
+      "tempo_resposta": 8.45,
+      "resposta_resumida": "A idade mínima para participar do Programa Jovem Programador é a partir de 16 anos.\n\nSe você tem 15 anos, poderá participar se completar 16 anos até 20/02/2026. Caso contrário, será necessário aguarda..."
+    },
+    {
+      "indice": 3,
+      "pergunta": "Quais são os requisitos para participar?",
+      "status_code": 200,
+      "tempo_resposta": 23.75,
+      "resposta_resumida": "Para participar do Programa Jovem Programador, é necessário atender aos seguintes requisitos:\n\n*   Ter idade a partir de 16 anos.\n*   Ter escolaridade mínima de ensino médio completo ou estar cursando..."
+    },
+    {
+      "indice": 4,
+      "pergunta": "Qual a idade mínima para participar?",
+      "status_code": 200,
+      "tempo_resposta": 27.48,
+      "resposta_resumida": "A idade mínima para participar do programa Jovem Programador é a partir de 16 anos.\n\nSe você tem 15 anos, poderá se inscrever caso complete 16 anos até 20/02/2026 (para a edição de 2026). Caso contrár..."
+    },
+    {
+      "indice": 5,
+      "pergunta": "Quanto tempo dura o curso?",
+      "status_code": 200,
+      "tempo_resposta": 40.99,
+      "resposta_resumida": "Desculpe, estou com dificuldades técnicas no momento. Tente novamente mais tarde. 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, h..."
+    },
+    {
+      "indice": 6,
+      "pergunta": "Quais são os requisitos para participar?",
+      "status_code": 200,
+      "tempo_resposta": 13.49,
+      "resposta_resumida": "Para participar do Programa Jovem Programador, é necessário atender aos seguintes requisitos:\n\n*   Ter idade a partir de 16 anos.\n*   Ter escolaridade mínima de estar cursando a 1ª série do Ensino Méd..."
+    },
+    {
+      "indice": 7,
+      "pergunta": "Qual o horário das aulas?",
+      "status_code": 200,
+      "tempo_resposta": 16.69,
+      "resposta_resumida": "Ao se inscrever no programa, você poderá selecionar a cidade e a turma que melhor se adapta às suas necessidades.\n\nÉ importante notar que o programa não garante vagas se as turmas já estiverem fechada..."
+    },
+    {
+      "indice": 8,
+      "pergunta": "O curso é gratuito?",
+      "status_code": 200,
+      "tempo_resposta": 40.79,
+      "resposta_resumida": "Sim, o Programa Jovem Programador é gratuito para pessoas que possuem renda familiar per capita de até 2 salários mínimos, por meio do Programa Senac de Gratuidade (PSG).\n\nPara aqueles que não se enqu..."
+    },
+    {
+      "indice": 9,
+      "pergunta": "Quais linguagens de programação são ensinadas?",
+      "status_code": 200,
+      "tempo_resposta": 36.28,
+      "resposta_resumida": "Desculpe, não encontrei essa informação no conteúdo oficial do site."
+    },
+    {
+      "indice": 10,
+      "pergunta": "Posso fazer outros cursos junto?",
+      "status_code": 200,
+      "tempo_resposta": 4.24,
+      "resposta_resumida": "Desculpe, não encontrei essa informação no conteúdo oficial do site."
+    }
+  ]
+}

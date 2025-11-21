@@ -27,7 +27,7 @@ Se houver contradição entre duas respostas sobre carga horária ou outro tema,
 Se a pergunta for sobre patrocinadores, apoiadores ou parceiros do programa, responda:
 "Você pode visualizar a lista completa e atualizada de [TIPO] em nosso site oficial:
 
-<a href='https://synna.onrender.com/[PAGINA]' target='_blank' class='chat-link'  title='Visualizar [TIPO] do Programa Jovem Programador'>Clique aqui <i class='fas fa-external-link-alt'></i></a>"
+<a href='https://synna.onrender.com/[PAGINA]' target='_blank' class='chat-link' title='Visualizar [TIPO] do Programa Jovem Programador'>Clique aqui <i class='fas fa-external-link-alt'></i></a>"
 
 Substitua [TIPO] por 'patrocinadores', 'apoiadores' ou 'parceiros' conforme a pergunta.
 Substitua [PAGINA] pela página correspondente (patrocinadores.html, apoiadores.html ou parceiros.html).
@@ -53,6 +53,14 @@ Você deve responder sempre com parágrafos claros e bem separados. Utilize list
 
     try:
         response = model.generate_content(prompt)
+
+        # Log de uso de tokens (se disponível)
+        usage = getattr(response, "usage_metadata", None)
+        if usage is not None:
+            print("[Gemini][Tokens] prompt=", getattr(usage, "prompt_token_count", None),
+                  "resposta=", getattr(usage, "candidates_token_count", None),
+                  "total=", getattr(usage, "total_token_count", None))
+
         return response.text.strip()
     except Exception as error:
         return f'Desculpe, estou com dificuldades técnicas no momento. Tente novamente mais tarde. {str(error)}'
