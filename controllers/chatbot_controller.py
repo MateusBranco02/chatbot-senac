@@ -4,8 +4,12 @@ import aiohttp
 import aiofiles
 from bs4 import BeautifulSoup
 from datetime import datetime
-from models.Chat import PerguntaRequest
+from fastapi import Depends
+from sqlalchemy.orm import Session
+from models.Chat import PerguntaRequest, FeedbackRequest
 from services.api_gemini import perguntar_ao_gemini
+from config.database import SessionLocal
+from models.Feedback import Feedback
 
 
 caminho_arquivo = 'data/dados_site.json'
@@ -98,4 +102,27 @@ async def carregar_conteudo_site(caminho=caminho_arquivo):
 
 async def getHealth():
     return { 'message': 'Api está online!' }
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+async def registrar_feedback(payload: FeedbackRequest, db: Session = Depends(get_db)):
+   
+    score = 1 if payload.score > 0 else -1
+
+    feedback = Feedback(
+        session_id=payload.session_id,
+        score=score,
+    )
+    db.add(feedback)
+    db.commit()
+    db.refresh(feedback)
+
+    return {"status": "ok"}
 
